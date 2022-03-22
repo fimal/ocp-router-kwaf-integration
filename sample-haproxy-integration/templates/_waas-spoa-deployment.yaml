@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: waas-spoa-deployment
+  labels:
+    app: spoa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spoa
+  template:
+    metadata:
+      labels:
+        app: spoa
+    spec:
+      containers:
+      - name: spoa
+        image: ******us104237-spoa:latest
+        args:
+          - python
+          - agent.py
+          - --enforcer_svc_host
+          - waas-enforcer-service.kwaf.svc
+          - --enforcer_svc_port
+          - "80"
+        ports:
+        - containerPort: 9008

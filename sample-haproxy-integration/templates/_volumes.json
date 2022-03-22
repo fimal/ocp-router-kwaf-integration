@@ -1,0 +1,108 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "name": "router",
+            "volumeMounts": [
+              {
+                "mountPath": "/etc/pki/tls/private",
+                "name": "default-certificate",
+                "readOnly": true
+              },
+              {
+                "mountPath": "/var/run/configmaps/service-ca",
+                "name": "service-ca-bundle",
+                "readOnly": true
+              },
+              {
+                "mountPath": "/var/lib/haproxy/conf/metrics-auth",
+                "name": "stats-auth",
+                "readOnly": true
+              },
+              {
+                "mountPath": "/etc/pki/tls/metrics-certs",
+                "name": "metrics-certs",
+                "readOnly": true
+              },
+              {
+                "name": "haproxy-template",
+                "mountPath": "/var/lib/haproxy/conf/haproxy-config.template",
+                "subPath": "haproxy-config.template"
+              },
+              {
+                "name": "mirror",
+                "mountPath": "/var/lib/haproxy/conf/mirror.cfg",
+                "subPath": "mirror.cfg"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "name": "default-certificate",
+            "secret": {
+              "defaultMode": 420,
+              "secretName": "router-certs-default"
+            }
+          },
+          {
+            "configMap": {
+              "defaultMode": 420,
+              "items": [
+                {
+                  "key": "service-ca.crt",
+                  "path": "service-ca.crt"
+                }
+              ],
+              "name": "service-ca-bundle",
+              "optional": false
+            },
+            "name": "service-ca-bundle"
+          },
+          {
+            "name": "stats-auth",
+            "secret": {
+              "defaultMode": 420,
+              "secretName": "router-stats-default"
+            }
+          },
+          {
+            "name": "metrics-certs",
+            "secret": {
+              "defaultMode": 420,
+              "secretName": "router-metrics-certs-default"
+            }
+          },
+          {
+            "name": "haproxy-template",
+            "configMap": {
+              "defaultMode": 511,
+              "name": "haproxy-template",
+              "items": [
+                {
+                  "key": "haproxy-config.template",
+                  "path": "haproxy-config.template"
+                }
+              ]
+            }
+          },
+          {
+            "name": "mirror",
+            "configMap": {
+              "defaultMode": 511,
+              "name": "mirror",
+              "items": [
+                {
+                  "key": "mirror.cfg",
+                  "path": "mirror.cfg"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

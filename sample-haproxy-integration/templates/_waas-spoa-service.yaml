@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: waas-spoa-service
+spec:
+  selector:
+    app: spoa
+  ports:
+    - protocol: TCP
+      port: 9008
+      targetPort: 9008
+  type: ClusterIP
+  

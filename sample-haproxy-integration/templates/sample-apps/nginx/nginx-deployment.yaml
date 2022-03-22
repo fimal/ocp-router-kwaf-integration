@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-nginx-deployment
+  labels:
+    waas.radware.com/sample: nginx
+spec:
+  selector:
+    matchLabels:
+      app: sample-nginx-container
+  template:
+    metadata:
+      labels:
+        app: sample-nginx-container
+        waas.radware.com/protection: enabled
+    spec:
+      containers:
+        - args:
+          - "-c"
+          - "sed -i 's@listen       8080;@listen       8080; listen       [::]:8080;@' /etc/nginx/conf.d/default.conf && /docker-entrypoint.sh nginx -g 'daemon off;'"
+          command: ["/bin/sh"]
+          image: nginxinc/nginx-unprivileged:stable-alpine
+          imagePullPolicy: IfNotPresent
+          name: sample-nginx

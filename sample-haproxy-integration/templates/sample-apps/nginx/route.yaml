@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    waas.radware.com/sample: nginx
+  name: nginx
+spec:
+  host: nginx-test.apps.ocp4-9.ctolab.corp.radware.com
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sample-nginx-service
+    weight: 100
+  wildcardPolicy: None

@@ -1,0 +1,31 @@
+apiVersion: waas.radware.com/v1beta1
+kind: Profile
+metadata:
+  name:  waas-api-profile
+  labels:
+    release: waas
+spec:
+  policies:
+  - name: apiPolicy
+    operatorEmail: support@radware.com
+    protections:
+    - id: nginx
+      signatures:
+        opMode: Active
+      expressions:
+        opMode: Active
+    - id: allow-all
+      action: Bypass
+    classifiers:
+    - protectionId: nginx
+      hostname: 'nginx-test.apps.ocp4-9.ctolab.corp.radware.co*'
+      id: nginx-sample
+      path:
+        operand: Prefix
+        value: /
+    - protectionId: allow-all
+      hostname: '*'
+      id: allow-all
+      path:
+        operand: Prefix
+        value: /

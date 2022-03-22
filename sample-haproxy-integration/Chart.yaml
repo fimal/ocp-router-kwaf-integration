@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "0.1.0"
+description: Radware Sample haproxy integration Chart
+name: sample-haproxy-integration
+version: 1.8.0
+icon: https://www.radware.com/RadwareNext/images/logo.svg
